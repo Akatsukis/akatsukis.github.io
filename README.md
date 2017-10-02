@@ -1,0 +1,2 @@
+# akatsukis.github.io
+blog

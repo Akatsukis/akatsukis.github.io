@@ -1,14 +1,14 @@
 # Basic
-title: Akatsukis
+title: Akatsuki
 subtitle: akatsukis.me
-#welcome_message: <a href="https://github.com/onevcat/vno-jekyll" target="_blank">Download the theme</a>
-#description: Vno Jekyll is a port of my Ghost theme vno.
-#creator: <a href="http://onev.cat">@onevcat</a>
+welcome_message: ❤<a href="http://changeless.me" target="_blank">changeless</a>
+description: ACMer/Arch Linux user/头像是本人
+creator: <a href="https://github.com/Akatsukis">@Akatsuki</a>
 
 url: "http://akatsukis.me"
 
 author:
-  name: 'Akatsukis'
+  name: 'Akatsuki'
 
 permalink: /:year/:month/:title/
 
@@ -16,7 +16,7 @@ permalink: /:year/:month/:title/
 highlighter: rouge
 
 # supported colors: blue, green, purple, red, orange or slate. If you need clear, leave it empty.
-#cover_color: red
+#cover_color: 
 
 # The blog button should not be removed.
 blog_button:
@@ -35,11 +35,11 @@ paginate_path: "page/:num/"
 
 # Comment
 comment:
-    disqus: vno-jekyll
+    #disqus: vno-jekyll
     # duoshuo: 
     
 # Social
-social:
+#social:
 #    weibo: onevcat
 #    github: onevcat
 #    twitter: onevcat
@@ -47,6 +47,6 @@ social:
 #    mail: onev@onevcat.com
 
 # Google Analytics
-ga:
+#ga:
     # id: your_ga_id
     # host: your_host

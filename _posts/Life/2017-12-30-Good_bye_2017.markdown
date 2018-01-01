@@ -1,5 +1,6 @@
 ---
 layout: post
+comments: True
 title: Good Bye 2017
 tags:
 - 日常
@@ -65,7 +66,11 @@ categories: 随笔
 ![](/assets/post/screenshot_5.jpg)  
 ![](/assets/post/screenshot_4.jpg)  
 via xfcherish  
-感谢一年来队友@lych、@jojo23333、学长@xfcherish、室友@sddyzjh的carry，以及♥@changeless
+感谢一年来队友
+@<a href="http://blog.csdn.net/lyc19980424" target="_blank">lych</a>、
+@<a href="http://jonassenli.com/" target="_blank">jojo23333</a>、
+学长@xfcherish、
+室友@<a href="http://blog.csdn.net/sddyzjh" target="_blank">sddyzjh</a>的carry，以及♥@<a href="http://changeless.me" target="_blank">changeless</a>
 
 一年里发生了很多事情，上半年的焦虑和心情反复，头发留到披肩长又剪短，希望接下来的一年里可以继续洒脱地过自己喜欢的日子吧。
   
@@ -77,4 +82,4 @@ via xfcherish
 > 10年後の僕はどうなるの?  
 > Somebody I would never want to be  
 > 「どうしてかはわからずな」 の No No!!  
-> <p align="right">——20 years old</p>
+> <p align="right">——「20 years old」</p>

@@ -13,6 +13,7 @@ author:
 permalink: /:year/:month/:title/
 
 # Format
+markdown: kramdown
 highlighter: rouge
 
 # supported colors: blue, green, purple, red, orange or slate. If you need clear, leave it empty.

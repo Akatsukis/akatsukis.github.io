@@ -1,0 +1,520 @@
+---
+layout: post
+comments: True
+title: Codeforces ECR37 题解
+tags:
+- brute force  
+- implementation  
+- 前缀和  
+- 图论  
+- 线段树  
+- 容斥原理  
+categories: 题解
+---
+Educational Codeforces Round 37 题解  
+题目链接:<a href="http://codeforces.com/contest/920" target="_blank">http://codeforces.com/contest/920</a>  
+
+### A
+***
+题意:多组数据。有一行n个房间，其中有k个房间再第1秒会被水充满，每个充满水的房间可以使相邻的房间在1s后也充满水，问过多少秒后所有房间都将充满水。    
+<br/>
+数据范围:1 ≤ t ≤ 200, 1 ≤ n ≤ 200, 1 ≤ k ≤ n   
+<br/>
+题解:模拟，每一轮计算这一轮会被注满水的房间，然后判断这一轮之后是否所有房间都已经充满水。  
+<br/>
+代码:  
+{% highlight C++ %}
+#include <bits/stdc++.h>
+using namespace std;
+#define ll long long
+#define ull unsigned long long
+#define pii pair<int, int>
+#define pb push_back
+#define mk make_pair
+#define fi first
+#define se second
+#define mid(l,r) ((l)+((r)-(l))/2)
+#define ALL(A) A.begin(), A.end()
+#define sc(x) scanf("%d", &x)
+#define pr(x) printf("x:%dn", x)
+#define fastio ios::sync_with_stdio(0),cin.tie(0)
+#define frein freopen("in.txt", "r", stdin)
+#define freout freopen("out.txt", "w", stdout)
+#define debug cout<<"???"<<endl
+const ll mod = 1000000007;
+const int INF = 0x3f3f3f3f;
+const ll INF64 = 0x3f3f3f3f3f3f3f3f;
+const double eps = 1e-7;
+template<class T> T gcd(T a, T b){if(!b)return a;return gcd(b,a%b);}
+bool vis[200];
+	
+int main()
+{
+    int T;
+    sc(T);
+    while(T--){
+        memset(vis, 0, sizeof(vis));
+        int n, k;
+        scanf("%d%d", &n, &k);
+        for(int i = 0; i < k; i++){
+            int u;
+            scanf("%d", &u);
+            vis[u] = 1;
+        }
+        int ans = 1;
+        while(1){
+            bool flag = 1;
+            for(int i = 1; i <= n; i++){
+                if(!vis[i]){
+                    flag = 0;
+                    break;
+                }
+            }
+            if(flag)break;
+            else ans++;
+            vector<int> v;
+            for(int i = 1; i <= n; i++){
+                if(vis[i]){
+                    if(i-1>0)v.pb(i-1);
+                    if(i+1<=n)v.pb(i+1);
+                }
+            }
+            for(int i = 0; i < (int)v.size(); i++){
+                vis[v[i]] = 1;
+            }
+        }
+        printf("%d\n", ans);
+    }
+	return 0;
+}
+{% endhighlight %}  
+<br/>
+### B
+***
+题意:多组数据。n个学生排队打水，第i个学生在第l<sub>i</sub>秒去打水，每秒只能满足一个人的打水要求，如果两个学生在同一时刻去打水，那么会先满足序号小的人。如果第i个人一直不能排上队那么他会在第r<sub>i</sub>秒离开，输出每个人打到水的时间，如果不能打到，输出0。  
+<br/>
+数据范围:1 ≤ t ≤ 1000, 1 ≤ n ≤ 1000, 1 ≤ l<sub>i</sub> ≤ r<sub>i</sub> ≤ 5000, l<sub>i-1</sub> ≤ l<sub>i</sub>  
+<br/>
+题解: 注意到有l<sub>i-1</sub> ≤ l<sub>i</sub>，所以如果连续的两个人都能打到水，那么前一个人打到水的时间一定在后一个人之前。所以可以考虑按顺序处理。维护当前最快打到水的时间，如果大于r<sub>i</sub>，那么说明当前这个人不能打到水，否则的话说明可以打到。  
+<br/>
+代码:  
+{% highlight C++ %}
+#include <bits/stdc++.h>
+using namespace std;
+#define ll long long
+#define ull unsigned long long
+#define pii pair<int, int>
+#define pb push_back
+#define mk make_pair
+#define fi first
+#define se second
+#define mid(l,r) ((l)+((r)-(l))/2)
+#define ALL(A) A.begin(), A.end()
+#define sc(x) scanf("%d", &x)
+#define pr(x) printf("x:%dn", x)
+#define fastio ios::sync_with_stdio(0),cin.tie(0)
+#define frein freopen("in.txt", "r", stdin)
+#define freout freopen("out.txt", "w", stdout)
+#define debug cout<<"???"<<endl
+const ll mod = 1000000007;
+const int INF = 0x3f3f3f3f;
+const ll INF64 = 0x3f3f3f3f3f3f3f3f;
+const double eps = 1e-7;
+template<class T> T gcd(T a, T b){if(!b)return a;return gcd(b,a%b);}
+int n;
+vector<int> ans;
+
+int main()
+{
+    int T;
+    sc(T);
+    while(T--){
+        ans.clear();
+        scanf("%d", &n);
+        int now = 0;
+        for(int i = 0; i < n; i++){
+            int l, r;
+            scanf("%d%d", &l, &r);
+            if(r < now)ans.pb(0);
+            else{
+                now = max(now, l);
+                ans.pb(now);
+                now++;
+            }
+        }
+        for(int i = 0; i < (int)ans.size(); i++){
+            printf("%d%c", ans[i], " \n"[i==n-1]);
+        }
+    }
+	return 0;
+}
+{% endhighlight %}  
+<br/>
+### C
+***
+题意:给出1～n的一种排列a<sub>1</sub>~a<sub>n</sub>，再给出一个长为n-1的01串，如果串的第i位为1说明可以交换a<sub>i</sub>和a<sub>i+1</sub>，否则不能交换，问能否通过一系列的操作使得整个数组为递增序。  
+<br/>
+数据范围:2 ≤ n ≤ 200000, 1 ≤ ai ≤ 200000.  
+<br/>
+题解:第i个数a<sub>i</sub>在排序后应该位于第a<sub>i</sub>个位置，因此对于每一个数都必须有i和a<sub>i</sub>之间的数字都可以交换才能满足条件。用前缀和计算。  
+<br/>
+代码:
+{% highlight C++ %}
+#include <bits/stdc++.h>
+using namespace std;
+#define ll long long
+#define ull unsigned long long
+#define pii pair<int, int>
+#define pb push_back
+#define mk make_pair
+#define fi first
+#define se second
+#define mid(l,r) ((l)+((r)-(l))/2)
+#define ALL(A) A.begin(), A.end()
+#define sc(x) scanf("%d", &x)
+#define pr(x) printf("x:%dn", x)
+#define fastio ios::sync_with_stdio(0),cin.tie(0)
+#define frein freopen("in.txt", "r", stdin)
+#define freout freopen("out.txt", "w", stdout)
+#define debug cout<<"???"<<endl
+const ll mod = 1000000007;
+const int INF = 0x3f3f3f3f;
+const ll INF64 = 0x3f3f3f3f3f3f3f3f;
+const double eps = 1e-7;
+template<class T> T gcd(T a, T b){if(!b)return a;return gcd(b,a%b);}
+const int maxn = 2e5+10;
+int num[maxn];
+char s[maxn];
+int sum[maxn];
+
+int main()
+{
+    int n;
+    scanf("%d", &n);
+    for(int i = 1; i <= n; i++){
+        scanf("%d", &num[i]);
+    }
+    scanf("%s", s);
+    for(int i = 1; i < n; i++){
+        sum[i] = sum[i-1];
+        if(s[i-1]=='1')sum[i]++;
+    }
+    bool flag = 1;
+    for(int i = 1; i <= n; i++){
+        int l = i, r = num[i];
+        if(l > r)swap(l, r);
+        if(sum[r-1]-sum[l-1]!=r-l){
+            flag = 0;
+            break;
+        }
+    }
+    if(flag)printf("YES\n");
+    else printf("NO\n");
+	return 0;
+}
+{% endhighlight %} 
+<br/>
+### D
+***
+TODO
+<br/>
+### E
+***
+题意:给出一个n个点和n(n-1)/2-m条边的无向图，问图中的每个连通块的大小。  
+<br/>
+数据范围:1 ≤ n ≤ 200000, 0 ≤ m ≤ min(n(n-1)/2,200000).  
+<br/>
+题解:用list维护未处理的点的集合，将已经划为同一个连通块的点打上标记，按顺序访问每一个点，如果没有标记，则进行一次bfs，bfs一个点之前先将该点未连接的点(读入的边)打上ban标记，如果list集合中有没被打上ban标记的点，说明两个点连通。  
+<br/>
+代码:
+{% highlight C++ %}
+#include <bits/stdc++.h>
+using namespace std;
+#define ll long long
+#define ull unsigned long long
+#define pii pair<int, int>
+#define pb push_back
+#define mk make_pair
+#define fi first
+#define se second
+#define mid(l,r) ((l)+((r)-(l))/2)
+#define ALL(A) A.begin(), A.end()
+#define sc(x) scanf("%d", &x)
+#define pr(x) printf("x:%dn", x)
+#define fastio ios::sync_with_stdio(0),cin.tie(0)
+#define frein freopen("in.txt", "r", stdin)
+#define freout freopen("out.txt", "w", stdout)
+#define debug cout<<"???"<<endl
+const ll mod = 1000000007;
+const int INF = 0x3f3f3f3f;
+const ll INF64 = 0x3f3f3f3f3f3f3f3f;
+const double eps = 1e-7;
+template<class T> T gcd(T a, T b){if(!b)return a;return gcd(b,a%b);}
+const int maxn = 2e5+10;
+list<int> lst;
+vector<vector<int> > G(maxn);
+bool vis[maxn];
+bool ban[maxn];
+int n, m;
+vector<int> ans;
+
+int bfs(int u)
+{
+    queue<int> q;
+    q.push(u);
+    int res = 0;
+    while(!q.empty()){
+        int v = q.front();q.pop();
+        if(vis[v] == 1)continue;
+        vis[v] = 1;res++;
+        for(auto &w: G[v])ban[w] = 1;
+        for(auto it = lst.begin(); it != lst.end();){
+            int w = *it;
+            if(!ban[w]){
+               q.push(w);
+               lst.erase(it++);
+            }
+            else it++;
+        }
+        for(auto &w:G[v])ban[w] = 0;
+    }
+    return res;
+}
+
+int main()
+{
+    sc(n);sc(m);
+    for(int i = 0; i < m; i++){
+        int u, v;
+        sc(u);sc(v);
+        G[u].pb(v);
+        G[v].pb(u);
+    }
+    for(int i = 1; i <= n; i++){
+        lst.pb(i);
+    }
+    for(int i = 1; i <= n; i++){
+        if(!vis[i]){
+            ans.pb(bfs(i));
+        }
+    }
+    sort(ALL(ans));
+    printf("%d\n", (int)ans.size());
+    for(int i = 0; i < (int)ans.size(); i++){
+        printf("%d%c", ans[i], " \n"[i+1==(int)ans.size()]);
+    }
+	return 0;
+}
+{% endhighlight %} 
+<br/>
+### F
+***
+题意:给出长为n的数据以及m个操作，操作共有两种，第一种是将[l,r]区间中的数字替换成D(a<sub>i</sub>)，第二种是询问区间[l,r]中的所有数字的和。其中D(x)表示x的因子的个数  
+<br/>
+数据范围:1 ≤ n, m ≤ 3000000, 1 ≤ ai ≤ 1000000.  
+<nr/>
+题解:典型的线段树维护的题目，容易发现x->D(x)下降得非常快，并且当x=1或者x=2时不会再继续更新，可以用线段树维护区间的和，每次更新的时候，如果区间内的所有值都已经是1或者2，那么不再向下更新，否则向下更新到每一个单点，计算D(a<sub>i</sub>)。类似题目可以参考<a href="http://acm.hdu.edu.cn/showproblem.php?pid=4027">hdu4027</a>  
+<br/>
+代码:
+{% highlight C++ %}
+#include <bits/stdc++.h>
+using namespace std;
+#define ll long long
+#define ull unsigned long long
+#define pii pair<int, int>
+#define pb push_back
+#define mk make_pair
+#define fi first
+#define se second
+#define mid(l,r) ((l)+((r)-(l))/2)
+#define ALL(A) A.begin(), A.end()
+#define sc(x) scanf("%d", &x)
+#define pr(x) printf(#x":%d\n", x)
+#define fastio ios::sync_with_stdio(0),cin.tie(0)
+#define frein freopen("in.txt", "r", stdin)
+#define freout freopen("out.txt", "w", stdout)
+#define debug cout<<"???"<<endl
+const ll mod = 1000000007;
+const int INF = 0x3f3f3f3f;
+const ll INF64 = 0x3f3f3f3f3f3f3f3f;
+const double eps = 1e-7;
+template<class T> T gcd(T a, T b){if(!b)return a;return gcd(b,a%b);}
+const int maxn = 3e5+10;
+ll tree[maxn*4];
+bool vis[maxn*4];
+int num[maxn];
+int n, m;
+
+void build(int k, int l, int r)
+{
+    //printf("%d %d %d\n", k, l, r);
+    if(l == r - 1){
+        tree[k] = num[l];
+        if(num[l] == 1 || num[l] == 2)vis[k] = 1;
+    }
+    else{
+        int m = (l+r)/2;
+        build(k*2+1, l, m);
+        build(k*2+2, m, r);
+        tree[k] = tree[k*2+1]+tree[k*2+2];
+        if(vis[k*2+1]&&vis[k*2+2])vis[k] = 1;
+    }
+}
+
+void D(int id)
+{
+    int tmp = tree[id];
+    vector<int> v;
+    for(int i = 2; (ll)i*i <= tmp; i++){
+        if(tmp%i==0){
+            int cnt = 0;
+            while(tmp%i==0){
+                tmp/=i;
+                cnt++;
+            }
+            v.pb(cnt);
+        }
+    }
+    if(tmp > 1)v.pb(1);
+    int ans = 1;
+    for(int i = 0; i < (int)v.size(); i++){
+        ans *= v[i]+1;
+    }
+    //printf("D(%lld):%d\n", tree[id], ans);
+    tree[id] = ans;
+}
+
+void update(int a, int b, int k, int l, int r)
+{
+    //printf("update(%d,%d,%d,%d,%d)\n", a, b, k, l, r);
+    if(vis[k])return;
+    if(r <= a || l >= b)return;
+    if(l==r-1){
+        D(k);
+        if(tree[k] == 1 || tree[k] == 2)vis[k] = 1;
+        return;
+    }
+    int m = (l+r)/2;
+    update(a, b, k*2+1, l, m);
+    update(a, b, k*2+2, m, r);
+    tree[k] = tree[k*2+1] + tree[k*2+2];
+    if(vis[k*2+1]&&vis[k*2+2])vis[k] = 1;
+}
+
+ll query(int a, int b, int k, int l, int r)
+{
+    //printf("query(%d,%d,%d,%d,%d)\n", a, b, k, l, r);
+    if(r <= a || l >= b)return 0;
+    if(l >= a && r <= b)return tree[k];
+    int m= (l+r)/2;
+    ll v1 = query(a, b, k*2+1, l, m);
+    ll v2 = query(a, b, k*2+2, m, r);
+    return v1+v2;
+}
+
+int main()
+{
+    scanf("%d%d", &n, &m);
+    for(int i = 0; i < n; i++){
+        scanf("%d", &num[i]);
+    }
+    build(0, 0, n);
+    for(int i = 0; i < m; i++){
+        int t, l, r;
+        scanf("%d%d%d", &t, &l, &r);
+        //printf("tree[0]:%lld\n", tree[0]);
+        if(t == 1){
+            update(l-1, r, 0, 0, n);
+        }
+        if(t == 2){
+            ll ans = query(l-1, r, 0, 0, n);
+            printf("%lld\n", ans);
+        }
+    }
+	return 0;
+}
+{% endhighlight %}  
+<br/>
+### G
+***
+题意:多组数据。每一组数据给出三个数字x，p，k，问y>x中gcd(p,y)=1的第k个数是什么。  
+<br/>
+数据范围:1 ≤ t ≤ 30000, 1 ≤ x, p, k ≤ 1000000.  
+<br/>
+题解:暴力枚举因子+容斥定理。先将p分解质因数，枚举它的每一个质因子的组合，每一次二分答案，用容斥原理计算小于当前的二分值的满足条件的个数有多少个。对于x的限制，只需要预先计算出来小于等于x的满足条件的数有多少个并加到k上即可。  
+<br/>
+代码:
+{% highlight C++ %}  
+#include <bits/stdc++.h>
+using namespace std;
+#define ll long long
+#define ull unsigned long long
+#define pii pair<int, int>
+#define pb push_back
+#define mk make_pair
+#define fi first
+#define se second
+#define mid(l,r) ((l)+((r)-(l))/2)
+#define ALL(A) A.begin(), A.end()
+#define sc(x) scanf("%d", &x)
+#define pr(x) printf("x:%dn", x)
+#define fastio ios::sync_with_stdio(0),cin.tie(0)
+#define frein freopen("in.txt", "r", stdin)
+#define freout freopen("out.txt", "w", stdout)
+#define debug cout<<"???"<<endl
+const ll mod = 1000000007;
+const int INF = 0x3f3f3f3f;
+const ll INF64 = 0x3f3f3f3f3f3f3f3f;
+const double eps = 1e-7;
+template<class T> T gcd(T a, T b){if(!b)return a;return gcd(b,a%b);}
+
+ll cal(ll x, vector<int> v)
+{
+   // printf("x:%lld\n", x);
+    int n = v.size();
+    ll res = x;
+    for(int i = 1; i < (1<<n); i++){
+        int sgn = -1;
+        ll cnt = 1;
+        for(int j = 0; j < n; j++){
+            if(i>>j&1){
+                sgn *= -1;
+                cnt *= v[j];
+                //printf("cnt:%lld\n", cnt);
+            }
+        }
+        res -= sgn*(x/cnt);
+    }
+    return res;
+}
+
+int main()
+{
+    int T;
+    sc(T);
+    while(T--){
+        ll x, p, k;
+        scanf("%lld%lld%lld", &x, &p, &k);
+        vector<int> fac;
+        for(int i = 2; (ll)i*i <= p; i++){
+            if(p%i==0){
+                fac.pb(i);
+                while(p%i==0)p/=i;
+            }
+        }
+        if(p>1)fac.pb(p);
+        k += cal(x, fac);
+        ll l = 1, r = 1e12, ans = 1;
+        while(l <= r){
+            ll m = (l+r)/2;
+            if(cal(m, fac) >= k){
+                ans = m;
+                r = m - 1;
+            }
+            else l = m + 1;
+        }
+        printf("%lld\n", ans);
+    }
+	return 0;
+}
+{% endhighlight %}  

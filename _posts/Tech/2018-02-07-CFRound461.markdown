@@ -1,0 +1,343 @@
+---
+layout: post
+comments: True
+title: Codeforces Round 461 题解
+tags:
+- brute force  
+- implementation  
+  
+categories: 题解
+---
+Codeforces Round 461 题解  
+题目链接:<a href="http://codeforces.com/contest/922" target="_blank">http://codeforces.com/contest/922</a>  
+
+### A
+***
+题意:一道巨坑的题，打的时候被hack得意识模糊。题意是一开始Imp有一个原始的玩具，有两种操作，一种是将一个原始玩具放到机器中，可以多获得一个原始玩具和一个复制的玩具，另一种是将一个复制的玩具放入机器中，可以多获得两个复制的玩具，问是否有可能获得刚好x个复制玩具和y个原始玩具。  
+<br/>
+数据范围:0 ≤ x, y ≤ 1e9  
+<br/>
+题解:直接按照x和y的值把不可能的情况排除掉就可以，要注意不要漏判1个原始玩具和多于0个复制玩具在一起的情况，因为如果只有1个原始玩具是没法造出复制玩具的。  
+<br/>
+代码:  
+{% highlight C++ %}
+#include <bits/stdc++.h>
+using namespace std;
+#define ll long long
+#define ull unsigned long long
+#define pii pair<int, int>
+#define pb push_back
+#define mk make_pair
+#define fi first
+#define se second
+#define ALL(A) A.begin(), A.end()
+#define sc(x) scanf("%d", &x)
+#define pr(x) printf(#x">>>x:%d\n", x)
+#define fastio ios::sync_with_stdio(0),cin.tie(0)
+#define frein freopen("in.txt", "r", stdin)
+#define freout freopen("out.txt", "w", stdout)
+#define debug cout<<">>>STOP"<<endl
+const ll mod = 1000000007;
+const int INF = 0x3f3f3f3f;
+const ll INF64 = 0x3f3f3f3f3f3f3f3f;
+const double eps = 1e-7;
+template<class T> T gcd(T a, T b){if(!b)return a;return gcd(b,a%b);}
+
+int main()
+{
+    int x, y;
+    sc(x);sc(y);
+    if(y==0||(y==1&&x>0)||y-x>1||(x-y)%2==0)printf("No\n");
+    else printf("Yes\n");
+    return 0;
+}
+{% endhighlight %}  
+<br/>
+### B
+***
+题意:有多少个三元组满足0<a<b<c<=n,a^b^c=0且a、b、c可以组成三角形的三边。  
+<br/>
+数据范围:1 ≤ n ≤ 2500.   
+<br/>
+题解: 直接枚举a和b，根据异或的性质算出c，再判断是否满足其他条件就可以。  
+<br/>
+代码:  
+{% highlight C++ %}
+#include <bits/stdc++.h>
+using namespace std;
+#define ll long long
+#define ull unsigned long long
+#define pii pair<int, int>
+#define pb push_back
+#define mk make_pair
+#define fi first
+#define se second
+#define ALL(A) A.begin(), A.end()
+#define sc(x) scanf("%d", &x)
+#define pr(x) printf(#x">>>x:%d\n", x)
+#define fastio ios::sync_with_stdio(0),cin.tie(0)
+#define frein freopen("in.txt", "r", stdin)
+#define freout freopen("out.txt", "w", stdout)
+#define debug cout<<">>>STOP"<<endl
+const ll mod = 1000000007;
+const int INF = 0x3f3f3f3f;
+const ll INF64 = 0x3f3f3f3f3f3f3f3f;
+const double eps = 1e-7;
+template<class T> T gcd(T a, T b){if(!b)return a;return gcd(b,a%b);}
+
+int main()
+{
+    int n;
+    sc(n);
+    ll ans = 0;
+    for(int i = 1; i <= n; i++){
+        for(int j = i+1; j <= n; j++){
+            int k = i^j;
+            if(k>i&&k>j&&k<i+j&&k<=n)ans++;
+        }
+    }
+    printf("%lld\n", ans);
+    return 0;
+}
+{% endhighlight %}  
+<br/>
+### C
+***
+题意:给出n和k，问对于1≤i≤k，n%i是否互不相同。  
+<br/>
+数据范围:1 ≤ n, k ≤ 1e18.  
+<br/>
+题解:比赛的时候第一反应就是对于k的值较大的时候是可以直接确定无法达到余数互不相同的，还没打完就想到了大概证明过程。首先n%1=0是可以确定的，如果想要余数互不相同，那么n%2必须为1，n%3必须为2，依次类推，所以有n%1=0, n%2=1, n%3=2,...,所以如果想要构造一个满足条件的余数互不相同的数字，n至少为k!-1，增长速度非常快所以k>100的时候就不需要计算直接输出NO就可以了，对于比较小的k可以暴力计算一下。  
+<br/>
+代码:
+{% highlight C++ %}
+#include <bits/stdc++.h>
+using namespace std;
+#define ll long long
+#define ull unsigned long long
+#define pii pair<int, int>
+#define pb push_back
+#define mk make_pair
+#define fi first
+#define se second
+#define ALL(A) A.begin(), A.end()
+#define sc(x) scanf("%d", &x)
+#define pr(x) printf(#x">>>x:%d\n", x)
+#define fastio ios::sync_with_stdio(0),cin.tie(0)
+#define frein freopen("in.txt", "r", stdin)
+#define freout freopen("out.txt", "w", stdout)
+#define debug cout<<">>>STOP"<<endl
+const ll mod = 1000000007;
+const int INF = 0x3f3f3f3f;
+const ll INF64 = 0x3f3f3f3f3f3f3f3f;
+const double eps = 1e-7;
+template<class T> T gcd(T a, T b){if(!b)return a;return gcd(b,a%b);}
+set<int> st;
+
+int main()
+{
+    ll n, k;
+    scanf("%lld%lld", &n, &k);
+    if(k>=100)return !printf("No\n");
+    for(int i = 1; i <= k; i++){
+        int now = n%i;
+        if(st.count(now))return !printf("No\n");
+        else st.insert(now);
+    }
+    printf("Yes\n");
+    return 0;
+}
+{% endhighlight %} 
+<br/>
+### D
+***
+题意:给出n个只包含s和h的串，重新排列n个串的顺序并组合在一起，使得得到的串中包含的sh的字串最多，输出最多的sh的字串的个数。  
+<br/>
+数据范围:1 ≤ n ≤ 100000, their total length does not exceed 100000.  
+<br/>
+题解:很明显我们需要将s尽量往前放把h尽量往后放，对于两个串a和b，他们贡献的答案与他们两边或者中间的串无关，只和两个串的相对位置有关，因此可以尝试a+b和b+a，比较哪一种组合方式贡献更大，按此方式对串进行排序然后计算答案即可。  
+<br/>
+代码:
+{% highlight C++ %}
+#include <bits/stdc++.h>
+using namespace std;
+#define ll long long
+#define ull unsigned long long
+#define pii pair<int, int>
+#define pb push_back
+#define mk make_pair
+#define fi first
+#define se second
+#define ALL(A) A.begin(), A.end()
+#define sc(x) scanf("%d", &x)
+#define pr(x) printf(#x">>>x:%d\n", x)
+#define fastio ios::sync_with_stdio(0),cin.tie(0)
+#define frein freopen("in.txt", "r", stdin)
+#define freout freopen("out.txt", "w", stdout)
+#define debug cout<<">>>STOP"<<endl
+const ll mod = 1000000007;
+const int INF = 0x3f3f3f3f;
+const ll INF64 = 0x3f3f3f3f3f3f3f3f;
+const double eps = 1e-7;
+template<class T> T gcd(T a, T b){if(!b)return a;return gcd(b,a%b);}
+const int maxn = 1e5+10;
+string s[maxn];
+
+ll cal(string t)
+{
+    ll res = 0, cnt = 0;
+    for(auto &c:t){
+        if(c == 's')cnt++;
+        else res += cnt;
+    }
+    return res;
+}
+
+bool cmp(string a, string b)
+{
+    return cal(a+b)>cal(b+a);
+}
+
+int main()
+{
+    int n;
+    sc(n);
+    for(int i = 0; i < n; i++){
+        cin >> s[i];
+    }
+    sort(s, s + n, cmp);
+    string t;
+    for(int i = 0; i < n; i++)t += s[i];
+    printf("%lld\n", cal(t));
+    return 0;
+}
+{% endhighlight %}
+### E
+***
+题意:有n棵树，每棵树上分别有c<sub>i</sub>个鸟，吸引每棵树的鸟分别需要cost<sub>i</sub>的mana，一开始背包容量和已有的mana都是W，每吸引一只鸟可以扩展B格背包容量，每次向前走一棵树可以补充X个mana，mana不能超过背包容量，人也不能向后走，问最多可以吸引多少只鸟。  
+<br/>
+数据范围:1 ≤ n ≤ 1000, 0 ≤ W, B, X ≤ 1e9, 0 ≤ c<sub>i</sub> ≤ 10000, Sigma{c<sub>i</sub>} ≤ 10000.  
+<br/>
+题解:比较明显的dp题目，但是过程比较复杂，可以用dp[i]表示吸引i只鸟后最多可以剩下多少mana，一开始dp[0] = W, dp[k]=max(dp[k],dp[k-1]-cost[i]),每次移动到下一棵树的时候dp[i]=min(W+j*B, dp[i]+X).   
+<br/>
+代码:
+{% highlight C++ %}
+#include <bits/stdc++.h>
+using namespace std;
+#define ll long long
+#define ull unsigned long long
+#define pii pair<int, int>
+#define pb push_back
+#define mk make_pair
+#define fi first
+#define se second
+#define ALL(A) A.begin(), A.end()
+#define sc(x) scanf("%d", &x)
+#define pr(x) printf(#x">>>x:%d\n", x)
+#define fastio ios::sync_with_stdio(0),cin.tie(0)
+#define frein freopen("in.txt", "r", stdin)
+#define freout freopen("out.txt", "w", stdout)
+#define debug cout<<">>>STOP"<<endl
+const ll mod = 1000000007;
+const int INF = 0x3f3f3f3f;
+const ll INF64 = 0x3f3f3f3f3f3f3f3f;
+const double eps = 1e-7;
+template<class T> T gcd(T a, T b){if(!b)return a;return gcd(b,a%b);}
+const int maxn = 1e4+10;
+ll n, W, B, X;
+ll c[maxn];
+ll cost[maxn];
+ll dp[maxn];
+
+int main()
+{
+    scanf("%lld%lld%lld%lld", &n, &W, &B, &X);
+    for(int i = 0; i < n; i++)scanf("%lld", &c[i]);
+    for(int i = 0; i < n; i++)scanf("%lld", &cost[i]);
+    memset(dp, -1, sizeof(dp));
+    dp[0] = W;
+    for(int i = 0; i < n; i++){
+        for(int j = 0; j < c[i]; j++){
+            for(int k = maxn-1; k >= 1; k--){
+                if(dp[k-1] != -1)dp[k] = max(dp[k], dp[k-1]-cost[i]);
+            }
+        }
+        for(int j = maxn-1; j >= 1; j--){
+            if(dp[j] != -1)dp[j] = min(W+j*B, dp[j]+X);
+        }
+    }
+    for(int i = maxn-1; i >= 0; i--){
+        if(dp[i] != -1)return !printf("%d\n", i);
+    }
+    return 0;
+}
+{% endhighlight %} 
+<br/>
+### F
+***
+题意:给出n和k，问能否从1～n中选择任意多个数到一个集合中，使得集合中恰好有k个数对满足a<b且b整除a。  
+<br/>
+数据范围:2 ≤ n ≤ 3000000, 1 ≤ k ≤ min(1e9, n(n-1)/2).  
+<br/>
+题解: 先计算1～n每个数除自己以外的因子个数，然后从1～n依次往后选，如果全选都不能达到k个数对满足条件，那么显然无解。否则如果到第i个数的时候已经有大于或等于k个数对满足条件，那么就在1～i中依次排除部分质数使得刚好有k个数对满足条件。因为质数不会对比自己小的数(除1以外)组成的数对产生影响，并且越小的质数被排除后筛选掉的数对越多，所以按1～i的顺序排除质数。严格的证明待补充。  
+<br/>
+代码:
+{% highlight C++ %}
+#include <bits/stdc++.h>
+using namespace std;
+#define ll long long
+#define ull unsigned long long
+#define pii pair<int, int>
+#define pb push_back
+#define mk make_pair
+#define fi first
+#define se second
+#define ALL(A) A.begin(), A.end()
+#define sc(x) scanf("%d", &x)
+#define pr(x) printf(">>>"#x":%d\n", x)
+#define fastio ios::sync_with_stdio(0),cin.tie(0)
+#define frein freopen("in.txt", "r", stdin)
+#define freout freopen("out.txt", "w", stdout)
+#define debug cout<<">>>STOP"<<endl
+const ll mod = 1000000007;
+const int INF = 0x3f3f3f3f;
+const ll INF64 = 0x3f3f3f3f3f3f3f3f;
+const double eps = 1e-7;
+template<class T> T gcd(T a, T b){if(!b)return a;return gcd(b,a%b);}
+const int maxn = 3e5+10;
+int d[maxn];
+bool f[maxn];
+
+int main()
+{
+    int n, k;
+    sc(n);sc(k);
+    for(int i = 1; i <= n; i++){
+        for(int j = i<<1; j < maxn; j += i)d[j]++;
+    }
+    int sum = 0, id = 0;
+    for(int i = 1; i <= n; i++){
+        sum += d[i];
+        if(sum >= k){
+            id = i;
+            break;
+        }
+    }
+    if(sum < k)return !printf("No\n");
+    fill(f+1, f+n+1, 1);
+    for(int i = 1; i <= id; i++){
+        if(d[i] == 1 && id/i <= sum-k){
+            f[i] = 0;
+            sum -= id/i;
+        }
+    }
+    int ans = 0;
+    for(int i = 1; i <= id; i++)ans += f[i];
+    printf("Yes\n");
+    printf("%d\n", ans);
+    for(int i = 1; i <= id; i++)if(f[i])printf("%d ", i);
+    printf("\n");
+    return 0;
+}
+{% endhighlight %}  
+<br/>
